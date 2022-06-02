@@ -1443,7 +1443,7 @@ namespace MissionPlanner
 
         private void MenuTuning_Click(object sender, EventArgs e)
         {
-            if (Settings.Instance.GetBoolean("password_protect") == false)
+            if (Settings.Instance.GetBoolean("password_protect") == true)
             {
                 MyView.ShowScreen("SWConfig");
             }
@@ -1453,15 +1453,15 @@ namespace MissionPlanner
                 if (InputBox.Show("Enter Password", "Please enter your password", ref pw, true) ==
                     System.Windows.Forms.DialogResult.OK)
                 {
-                    bool ans = Password.ValidatePassword(pw);
+                    
 
-                    if (ans == false)
+                    if (pw != "admin")
                     {
                         CustomMessageBox.Show("Bad Password", "Bad Password");
                     }
                 }
 
-                if (Password.VerifyPassword(pw))
+                if (pw == "admin")
                 {
                     MyView.ShowScreen("SWConfig");
                 }

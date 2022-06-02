@@ -604,6 +604,12 @@
     <Compile Include="GCSViews\ConfigurationView\DeviceInfo.cs" />
     <Compile Include="GCSViews\ConfigurationView\DroneCANModel.cs" />
     <Compile Include="GCSViews\ConfigurationView\uitype.cs" />
+    <Compile Include="GCSViews\Login.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GCSViews\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Joystick\JoystickAxis.cs">
       <SubType>UserControl</SubType>
@@ -1008,6 +1014,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigUserDefined.resx">
       <DependentUpon>ConfigUserDefined.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\SITL.ko-KR.resx">
       <DependentUpon>SITL.cs</DependentUpon>
