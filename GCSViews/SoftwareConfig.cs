@@ -14,6 +14,7 @@ namespace MissionPlanner.GCSViews
     {
         internal static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static string lastpagename = "";
+        private string userType = "";
 
         public bool gotAllParams
         {
@@ -29,9 +30,10 @@ namespace MissionPlanner.GCSViews
                 return true;
             }
         }
-        public SoftwareConfig()
+        public SoftwareConfig(string userType)
         {
             InitializeComponent();
+            this.userType = userType;
         }
 
         public void Activate()
@@ -154,14 +156,20 @@ namespace MissionPlanner.GCSViews
 
                     if (MainV2.DisplayConfiguration.displayPlannerSettings)
                     {
-                        AddBackstageViewPage(typeof(ConfigPlanner), Strings.Planner);
+                        if(userType == "admin")
+                            AddBackstageViewPage(typeof(ConfigPlanner), Strings.Planner);
+                        else
+                            AddBackstageViewPage(typeof(ConfigPlannerPilot), Strings.Planner);
                     }
                 }
                 else
                 {
                     if (MainV2.DisplayConfiguration.displayPlannerSettings)
                     {
-                        start = AddBackstageViewPage(typeof(ConfigPlanner), Strings.Planner);
+                        if(userType == "admin")
+                            start = AddBackstageViewPage(typeof(ConfigPlanner), Strings.Planner);
+                        else
+                            start = AddBackstageViewPage(typeof(ConfigPlannerPilot), Strings.Planner);
                     }
                 }
 

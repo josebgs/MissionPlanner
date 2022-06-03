@@ -29,7 +29,6 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             CMB_Layout.Items.Add(DisplayNames.Custom);
 
             txt_log_dir.TextChanged += OnLogDirTextChanged;
-
         }
 
 

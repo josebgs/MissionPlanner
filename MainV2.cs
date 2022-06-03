@@ -547,6 +547,7 @@ namespace MissionPlanner
 
         public GCSViews.FlightPlanner FlightPlanner;
         GCSViews.SITL Simulation;
+        GCSViews.Login Login;
 
         private Form connectionStatsForm;
         private ConnectionStats _connectionStats;
@@ -924,6 +925,13 @@ namespace MissionPlanner
                 //Configuration = new GCSViews.ConfigurationView.Setup();
                 log.Info("Create SIM");
                 Simulation = new GCSViews.SITL();
+
+                Action<string> callback = delegate (string userType) {
+
+                    MyView.AddScreen(new MainSwitcher.Screen("SWConfig", new GCSViews.SoftwareConfig(userType), false));
+                    MyView.ShowScreen("SWConfig");
+                };
+                Login = new GCSViews.Login(callback);
                 //Firmware = new GCSViews.Firmware();
                 //Terminal = new GCSViews.Terminal();
 
@@ -1443,29 +1451,7 @@ namespace MissionPlanner
 
         private void MenuTuning_Click(object sender, EventArgs e)
         {
-            if (Settings.Instance.GetBoolean("password_protect") == true)
-            {
-                MyView.ShowScreen("SWConfig");
-            }
-            else
-            {
-                var pw = "";
-                if (InputBox.Show("Enter Password", "Please enter your password", ref pw, true) ==
-                    System.Windows.Forms.DialogResult.OK)
-                {
-                    
-
-                    if (pw != "admin")
-                    {
-                        CustomMessageBox.Show("Bad Password", "Bad Password");
-                    }
-                }
-
-                if (pw == "admin")
-                {
-                    MyView.ShowScreen("SWConfig");
-                }
-            }
+            MyView.ShowScreen("Login");
         }
 
         private void MenuTerminal_Click(object sender, EventArgs e)
@@ -3166,9 +3152,9 @@ namespace MissionPlanner
             MyView.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
             MyView.AddScreen(new MainSwitcher.Screen("FlightPlanner", FlightPlanner, true));
             MyView.AddScreen(new MainSwitcher.Screen("HWConfig", typeof(GCSViews.InitialSetup), false));
-            MyView.AddScreen(new MainSwitcher.Screen("SWConfig", typeof(GCSViews.SoftwareConfig), false));
             MyView.AddScreen(new MainSwitcher.Screen("Simulation", Simulation, true));
             MyView.AddScreen(new MainSwitcher.Screen("Help", typeof(GCSViews.Help), false));
+            MyView.AddScreen(new MainSwitcher.Screen("Login", Login, true));
 
             try
             {

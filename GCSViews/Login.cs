@@ -10,19 +10,23 @@ using System.Windows.Forms;
 
 namespace MissionPlanner.GCSViews
 {
-    public partial class Login : UserControl
+    public partial class Login : MyUserControl
     {
-        public Login()
+
+        Action<string> callback; 
+
+        public Login(Action<string> callback)
         {
             InitializeComponent();
+            this.callback = callback;
         }
 
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            if(usernameTextbox.Text == "admin" && passwordTextbox.Text == "admin")
+            if((usernameTextbox.Text == "admin" || usernameTextbox.Text == "pilot") && passwordTextbox.Text == "password")
             {
-
+                callback(usernameTextbox.Text);
             }
         }
     }

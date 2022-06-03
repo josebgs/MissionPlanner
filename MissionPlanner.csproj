@@ -574,6 +574,12 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigParamLoading.Designer.cs">
       <DependentUpon>ConfigParamLoading.cs</DependentUpon>
     </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigPlannerPilot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigPlannerPilot.Designer.cs">
+      <DependentUpon>ConfigPlannerPilot.cs</DependentUpon>
+    </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigSerialInjectGPS.Designer.cs">
       <DependentUpon>ConfigSerialInjectGPS.cs</DependentUpon>
     </Compile>
@@ -998,6 +1004,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigParamLoading.resx">
       <DependentUpon>ConfigParamLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigPlannerPilot.resx">
+      <DependentUpon>ConfigPlannerPilot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigREPL.ko-KR.resx">
       <DependentUpon>ConfigREPL.cs</DependentUpon>
