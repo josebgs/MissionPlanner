@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AltitudeAngelWings.ApiClient.Client;
@@ -25,27 +26,35 @@ namespace AltitudeAngelWings.Plugin
             _height = height;
         }
 
-        public Task<Uri> GetCodeUri(Uri authorizeUri, Uri redirectUri)
-            => _invoke.Invoke<Uri>(() =>
+        public async Task<Uri> GetCodeUri(Uri authorizeUri, Uri redirectUri)
+        {
+            var ss = new SemaphoreSlim(0, 1);
+
+            // BeginInvoke onto the ui thread, and await until closed
+            AltitudeAngelPlugin.Instance.Host.MainForm.BeginInvoke((Action)delegate ()
             {
-                using (var form = new Form())
-                {
-                    _result = redirectUri;
-                    // ReSharper disable once AccessToDisposedClosure
-                    _close = () => form.Close();
-                    form.StartPosition = FormStartPosition.CenterParent;
-                    form.Width = _width;
-                    form.Height = _height;
-                    var webBrowser = new WebBrowser();
-                    webBrowser.Navigating += WebBrowserOnNavigating;
-                    webBrowser.Navigated += WebBrowserOnNavigated;
-                    webBrowser.Dock = DockStyle.Fill;
-                    form.Controls.Add(webBrowser);
-                    webBrowser.Navigate(authorizeUri);
-                    form.ShowDialog(_owner);
-                    return _result;
-                }
+                var form = new Form();
+                _result = redirectUri;
+                // ReSharper disable once AccessToDisposedClosure
+                _close = () => { form.Close(); };
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.Width = _width;
+                form.Height = _height;
+                var webBrowser = new WebBrowser();
+                webBrowser.Navigating += WebBrowserOnNavigating;
+                webBrowser.Navigated += WebBrowserOnNavigated;
+                webBrowser.Dock = DockStyle.Fill;
+                form.Controls.Add(webBrowser);
+                webBrowser.Navigate(authorizeUri);
+                form.FormClosed += (s, e) => { ss.Release(); };
+
+                form.Show(_owner);
             });
+
+            await ss.WaitAsync();
+
+            return _result;
+        }
 
         private void WebBrowserOnNavigating(object sender, WebBrowserNavigatingEventArgs navigatingEventArgs)
         {

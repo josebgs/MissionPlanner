@@ -5,7 +5,7 @@ using AltitudeAngelWings.Service;
 
 namespace AltitudeAngelWings.Plugin
 {
-    public class AltitudeAngel : MissionPlanner.Plugin.Plugin
+    public class AltitudeAngelPlugin : MissionPlanner.Plugin.Plugin
     {
         private const string SettingsMenuItemName = "altitudeAngelSettings";
 
@@ -17,8 +17,11 @@ namespace AltitudeAngelWings.Plugin
 
         private bool _enabled;
 
+        static internal AltitudeAngelPlugin Instance;
+
         public override bool Init()
         {
+            Instance = this;
             Host.MainForm.Invoke((Action)(() => 
             {
                 Host.FDMenuMap.Items.Add(CreateSettingsMenuItem());
@@ -30,9 +33,9 @@ namespace AltitudeAngelWings.Plugin
         public override bool Loaded()
         {
             ServiceLocator.Clear();
-            if (Host.config.ContainsKey("AACheck2"))
+            if (Host.config.ContainsKey("AA_CheckEnableAltitudeAngel"))
             {
-                _enabled = !Host.config.GetBoolean("AACheck2");
+                _enabled = Host.config.GetBoolean("AA_CheckEnableAltitudeAngel");
             }
             else
             {
@@ -62,7 +65,7 @@ namespace AltitudeAngelWings.Plugin
                 text,
                 Resources.AskToEnableCaption,
                 CustomMessageBox.MessageBoxButtons.YesNo) == CustomMessageBox.DialogResult.Yes;
-            Host.config["AACheck2"] = (!_enabled).ToString();
+            Host.config["AA_CheckEnableAltitudeAngel"] = (_enabled).ToString();
             Host.config.Save();
         }
 
